@@ -4,17 +4,19 @@
 
 
 def make_empty_board():
+    """returns a new board"""
     return [[None, None, None],
             [None, None, None],
             [None, None, None]]
 
 
 def update_board(player, board, move):
+    """set a cell of the board to the player"""
     board[move[0]][move[1]] = player
     return board
 
 
-def check_winner(board, player):
+def get_winner(board, player):
     """ loop through all possible win patterns to find a winner
     returns boolean if win is found"""
     patterns = (((0,0), (0,1), (0,2)), # row win patterns
@@ -30,19 +32,8 @@ def check_winner(board, player):
         for coordinates in pattern:
             test.append(board[coordinates[0]][coordinates[1]])
         if test == [player, player, player]:
-            return True
-    return False
-
-
-def get_winner(board):
-    """Determines the winner of the given board.
-    Returns 'X', 'O', or None."""
-    if check_winner(board, 'X'):
-        return 'X'
-    elif check_winner(board, 'O'):
-        return 'O'
-    else:
-        return None
+            return player
+    return None
 
 
 def other_player(player):

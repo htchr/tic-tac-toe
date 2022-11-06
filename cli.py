@@ -7,6 +7,7 @@ from logic import make_empty_board, update_board, get_winner, other_player
 
 
 def print_board(board):
+    """display the board and return a dictionairy of open moves"""
     count = 1
     moves = {}
     for i, r in enumerate(board):
@@ -24,6 +25,8 @@ def print_board(board):
 
 
 def enter_move(board, player, moves):
+    """take user input for next move from a list of options
+    returns the update board with the players move"""
     print(f"{player}'s turn")
     turn = True
     while turn:
@@ -47,3 +50,4 @@ if __name__ == '__main__':
         player = other_player(player)
     print(f"{winner} won!")
     print_board(board)
+
