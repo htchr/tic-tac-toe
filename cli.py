@@ -46,7 +46,7 @@ if __name__ == '__main__':
     while winner == None:
         moves = print_board(board)
         board = enter_move(board, player, moves)
-        winner = get_winner(board)
+        winner = get_winner(board, player)
         player = other_player(player)
     print(f"{winner} won!")
     print_board(board)
