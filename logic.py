@@ -1,5 +1,9 @@
 class TicTacToe:
     def __init__(self):
+        """
+        set up game with board, players, win patterns, and winner
+        players are True if played by a human
+        """
         self.board = {1: ' ', 2: ' ', 3: ' ', 
                       4: ' ', 5: ' ', 6: ' ',
                       7: ' ', 8: ' ', 9: ' '}
@@ -9,7 +13,12 @@ class TicTacToe:
                              (1, 5, 9), (3, 5, 7))
         self.winner = None
 
+    def get_board(self):
+        """returns: dictionary used as game board"""
+        return self.board
+
     def open_moves(self):
+        """returns: dictionary keys with " " as value"""
         moves = []
         for key in self.board.keys():
             if self.board[key] == ' ':
@@ -20,9 +29,11 @@ class TicTacToe:
         self.players[player] = human
 
     def get_player_type(self, player):
+        """returns: boolean if player is human"""
         return self.players[player]
 
     def other_player(self, player):
+        """returns: string O if player is X & vice-versa"""
         for p in self.players.keys():
             if p != player:
                 return p
@@ -31,6 +42,7 @@ class TicTacToe:
         self.board[move] = player
 
     def check_winner(self):
+        """returns: None, only works to set self.winner"""
         for player in self.players.keys():
             for pattern in self.win_patterns:
                 test = []
@@ -44,6 +56,7 @@ class TicTacToe:
         return
 
     def get_winner(self):
+        """returns: self.winner ['X won!' / 'O won!' / 'Draw']"""
         return self.winner
 
     def __str__(self):

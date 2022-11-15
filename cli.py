@@ -2,6 +2,14 @@ from random import randint
 from logic import TicTacToe
 
 def user_input(prompt, expected_answer, error_message):
+    """
+    deal with user input, repeat message and error message
+    until user inputs one of the expected answers
+    prompt: string for python input
+    expected_answer: list of values to check for
+    error_message: string to print when user inputs unexpected value
+    returns: string of user input
+    """
     while True:
         answer = input(prompt)
         if answer not in expected_answer:
@@ -10,6 +18,12 @@ def user_input(prompt, expected_answer, error_message):
             return answer
 
 def human_move(ttt, player):
+    """
+    ask where the player wants to play, update board
+    ttt: TicTacToe instance
+    player: string 'X' or 'O'
+    returns: None
+    """
     moves = ttt.open_moves()
     move = user_input(f'please choose an open position to play {moves}: ',
                       moves,
@@ -17,6 +31,12 @@ def human_move(ttt, player):
     ttt.update_board(player, int(move))
 
 def bot_move(ttt, player):
+    """
+    generate random play from bot
+    ttt: TicTacToe instance
+    player: string 'X' or 'O'
+    returns: None
+    """
     moves = ttt.open_moves()
     while True:
         move = str(randint(1, 9))
@@ -26,6 +46,7 @@ def bot_move(ttt, player):
 
 if __name__ == "__main__":
     ttt = TicTacToe()
+    # player set-up
     n_players = user_input('how many humans are playing today? (0, 1, 2): ',
                            ['0', '1', '2'],
                            'please choose a number between 0 and 2')
@@ -40,6 +61,7 @@ if __name__ == "__main__":
             ttt.set_player_type('O', False)
         else:
             ttt.set_player_type('X', False)
+    # play game
     player = 'X'
     while ttt.get_winner() == None:
         print(ttt, end='\n\n')
