@@ -1,57 +1,53 @@
-# this file contains the Command Line Interface (CLI) for
-# the Tic-Tac-Toe game. This is where input and output happens.
-# For core game logic, see logic.py.
+from random import randint
+from logic import TicTacToe
 
-
-from logic import make_empty_board, update_board, get_winner, other_player 
-
-
-def print_board(board):
-    """display the board and return a dictionairy of open moves"""
-    count = 1
-    moves = {}
-    for i, r in enumerate(board):
-        print('|', end='')
-        for j, c in enumerate(r):
-            if c == None:
-                print(count, end='')
-                moves[str(count)] = (i, j)
-                count += 1
-            else:
-                print(c, end='')
-            print('|', end='')
-        print('')
-    return moves
-
-
-def enter_move(board, player, moves):
-    """take user input for next move from a list of options
-    returns the update board with the players move"""
-    print(f"{player}'s turn")
-    turn = True
-    while turn:
-        move = input("choose next move: ")
-        if move in list(moves.keys()):
-            board = update_board(player, board, moves[move])
-            turn = False
+def user_input(prompt, expected_answer, error_message):
+    while True:
+        answer = input(prompt)
+        if answer not in expected_answer:
+            print(error_message)
         else:
-            print("please enter a valid move")
-    return board
+            return answer
 
+def human_move(ttt, player):
+    moves = ttt.open_moves()
+    move = user_input(f'please choose an open position to play {moves}: ',
+                      moves,
+                      'please choose a valid open position to play')
+    ttt.update_board(player, int(move))
 
-if __name__ == '__main__':
-    board = make_empty_board()
-    player = "X"
-    winner = None
-    while winner == None:
-        moves = print_board(board)
-        if moves == {}:
-            print("Draw")
+def bot_move(ttt, player):
+    moves = ttt.open_moves()
+    while True:
+        move = str(randint(1, 9))
+        if move in moves:
+            ttt.update_board(player, int(move))
             break
-        board = enter_move(board, player, moves)
-        winner = get_winner(board, player)
-        if winner != None:
-            print(f"{winner} won!")
-            print_board(board)
-        player = other_player(player)
+
+if __name__ == "__main__":
+    ttt = TicTacToe()
+    n_players = user_input('how many humans are playing today? (0, 1, 2): ',
+                           ['0', '1', '2'],
+                           'please choose a number between 0 and 2')
+    if n_players == '0':
+        ttt.set_player_type('X', False)
+        ttt.set_player_type('O', False)
+    elif n_players == '1':
+        xo = user_input('would you like to play X or O? X goes first: ',
+                        ['X', 'O'],
+                        'please enter X or O, capitalization matters')
+        if xo == 'X':
+            ttt.set_player_type('O', False)
+        else:
+            ttt.set_player_type('X', False)
+    player = 'X'
+    while ttt.get_winner() == None:
+        print(ttt, end='\n\n')
+        if ttt.get_player_type(player):
+            human_move(ttt, player)
+        else:
+            bot_move(ttt, player)
+        ttt.check_winner()
+        player = ttt.other_player(player)
+    print(ttt.get_winner())
 

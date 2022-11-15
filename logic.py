@@ -1,45 +1,51 @@
-# this file is where game logic lives. No input
-# or output happens here. The logic in this file
-# should be unit-testable.
+class TicTacToe:
+    def __init__(self):
+        self.board = {1: ' ', 2: ' ', 3: ' ', 
+                      4: ' ', 5: ' ', 6: ' ',
+                      7: ' ', 8: ' ', 9: ' '}
+        self.players = {'X': True, 'O': True}
+        self.win_patterns = ((1, 2, 3), (4, 5, 6), (7, 8, 9),
+                             (1, 4, 7), (2, 5, 8), (3, 6, 9),
+                             (1, 5, 9), (3, 5, 7))
+        self.winner = None
 
+    def open_moves(self):
+        moves = []
+        for key in self.board.keys():
+            if self.board[key] == ' ':
+                moves.append(str(key))
+        return moves
 
-def make_empty_board():
-    """returns a new board"""
-    return [[None, None, None],
-            [None, None, None],
-            [None, None, None]]
+    def set_player_type(self, player, human):
+        self.players[player] = human
 
+    def get_player_type(self, player):
+        return self.players[player]
 
-def update_board(player, board, move):
-    """set a cell of the board to the player"""
-    board[move[0]][move[1]] = player
-    return board
+    def other_player(self, player):
+        for p in self.players.keys():
+            if p != player:
+                return p
 
+    def update_board(self, player, move):
+        self.board[move] = player
 
-def get_winner(board, player):
-    """ loop through all possible win patterns to find a winner
-    returns boolean if win is found"""
-    patterns = (((0,0), (0,1), (0,2)), # row win patterns
-                ((1,0), (1,1), (1,2)),
-                ((2,0), (2,1), (2,2)),
-                ((0,0), (1,0), (2,0)), # column win patterns
-                ((0,1), (1,1), (2,1)),
-                ((0,2), (1,2), (2,2)),
-                ((0,0), (1,1), (2,2)), # diagonal win patterns
-                ((0,2), (1,1), (2,0)))
-    for pattern in patterns:
-        test = []
-        for coordinates in pattern:
-            test.append(board[coordinates[0]][coordinates[1]])
-        if test == [player, player, player]:
-            return player
-    return None
+    def check_winner(self):
+        for player in self.players.keys():
+            for pattern in self.win_patterns:
+                test = []
+                for spot in pattern:
+                    test.append(self.board[spot])
+                    if test == [player, player, player]:
+                        self.winner = f'{player} won!'
+                        return
+        if self.open_moves() == []:
+            self.winner = 'Draw'
+        return
 
+    def get_winner(self):
+        return self.winner
 
-def other_player(player):
-    """Given the character for a player, returns the other player."""
-    if player == "X":
-        return "O"
-    else:
-        return "X"
+    def __str__(self):
+        return '{}|{}|{}\n{}|{}|{}\n{}|{}|{}'.format(*(self.board.values()))
 
