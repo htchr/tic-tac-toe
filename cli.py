@@ -1,7 +1,8 @@
+import typing
 from random import randint
 from logic import TicTacToe
 
-def user_input(prompt, expected_answer, error_message):
+def user_input(prompt: str, expected_answer: list, error_message: str) -> str:
     """
     deal with user input, repeat message and error message
     until user inputs one of the expected answers
@@ -17,7 +18,7 @@ def user_input(prompt, expected_answer, error_message):
         else:
             return answer
 
-def human_move(ttt, player):
+def human_move(ttt: TicTacToe, player: str) -> None:
     """
     ask where the player wants to play, update board
     ttt: TicTacToe instance
@@ -30,7 +31,7 @@ def human_move(ttt, player):
                       'please choose a valid open position to play')
     ttt.update_board(player, int(move))
 
-def bot_move(ttt, player):
+def bot_move(ttt: TicTacToe, player: str) -> None:
     """
     generate random play from bot
     ttt: TicTacToe instance
