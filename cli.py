@@ -71,5 +71,7 @@ if __name__ == "__main__":
             bot_move(ttt, player)
         ttt.check_winner()
         player = ttt.other_player(player)
+    print(ttt, end='\n\n')
     print(ttt.get_winner())
+
 
