@@ -15,7 +15,7 @@ class TicTacToe:
                              (1, 5, 9), (3, 5, 7))
         self.winner = None
 
-    def get_board(self) -> None:
+    def get_board(self) -> dict:
         """returns: dictionary used as game board"""
         return self.board
 
