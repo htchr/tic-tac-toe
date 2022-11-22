@@ -1,6 +1,5 @@
 import typing
-from random import randint
-from logic import TicTacToe
+from logic import TicTacToe, Human, Bot
 
 def user_input(prompt: str, expected_answer: list, error_message: str) -> str:
     """
@@ -18,7 +17,7 @@ def user_input(prompt: str, expected_answer: list, error_message: str) -> str:
         else:
             return answer
 
-def human_move(ttt: TicTacToe, player: str) -> None:
+def human_move(ttt: TicTacToe) -> None:
     """
     ask where the player wants to play, update board
     ttt: TicTacToe instance
@@ -26,24 +25,11 @@ def human_move(ttt: TicTacToe, player: str) -> None:
     returns: None
     """
     moves = ttt.open_moves()
+    print(f"it is {ttt.get_player()}'s turn")
     move = user_input(f'please choose an open position to play {moves}: ',
                       moves,
                       'please choose a valid open position to play')
-    ttt.update_board(player, int(move))
-
-def bot_move(ttt: TicTacToe, player: str) -> None:
-    """
-    generate random play from bot
-    ttt: TicTacToe instance
-    player: string 'X' or 'O'
-    returns: None
-    """
-    moves = ttt.open_moves()
-    while True:
-        move = str(randint(1, 9))
-        if move in moves:
-            ttt.update_board(player, int(move))
-            break
+    ttt.get_player().move(ttt, int(move))
 
 if __name__ == "__main__":
     ttt = TicTacToe()
@@ -59,20 +45,23 @@ if __name__ == "__main__":
                         ['X', 'O'],
                         'please enter X or O, capitalization matters')
         if xo == 'X':
+            ttt.set_player_type('X', True)
             ttt.set_player_type('O', False)
         else:
             ttt.set_player_type('X', False)
+            ttt.set_player_type('O', True)
+    else:
+        ttt.set_player_type('X', True)
+        ttt.set_player_type('O', True)
     # play game
-    player = 'X'
     while ttt.get_winner() == None:
         print(ttt, end='\n\n')
-        if ttt.get_player_type(player):
-            human_move(ttt, player)
+        if isinstance(ttt.get_player(), Human):
+            human_move(ttt)
         else:
-            bot_move(ttt, player)
+            ttt.get_player().move(ttt)
         ttt.check_winner()
-        player = ttt.other_player(player)
+        ttt.switch_player()
     print(ttt, end='\n\n')
     print(ttt.get_winner())
-
 

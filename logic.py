@@ -1,4 +1,12 @@
 import typing 
+from random import randint
+
+class Player:
+    def __init__(self, symbol: str) -> None:
+        self.symbol = symbol
+
+    def __str__(self) -> None:
+        return f'{self.symbol}'
 
 class TicTacToe:
     def __init__(self) -> None:
@@ -9,7 +17,8 @@ class TicTacToe:
         self.board = {1: ' ', 2: ' ', 3: ' ', 
                       4: ' ', 5: ' ', 6: ' ',
                       7: ' ', 8: ' ', 9: ' '}
-        self.players = {'X': True, 'O': True}
+        self.player = 'X'
+        self.players = {'X': None, 'O': None}
         self.win_patterns = ((1, 2, 3), (4, 5, 6), (7, 8, 9),
                              (1, 4, 7), (2, 5, 8), (3, 6, 9),
                              (1, 5, 9), (3, 5, 7))
@@ -27,35 +36,38 @@ class TicTacToe:
                 moves.append(str(key))
         return moves
 
-    def set_player_type(self, player: str, human: bool) -> None:
-        self.players[player] = human
+    def set_player_type(self, symbol: str, human: bool) -> None:
+        if human:
+            self.players[symbol] = Human(symbol)
+        else:
+            self.players[symbol] = Bot(symbol)
 
-    def get_player_type(self, player: str) -> bool:
+    def get_player(self) -> Player:
         """returns: boolean if player is human"""
-        return self.players[player]
+        return self.players[self.player]
 
-    def other_player(self, player: str) -> str:
+    def switch_player(self) -> None:
         """returns: string O if player is X & vice-versa"""
-        for p in self.players.keys():
-            if p != player:
-                return p
+        for key in self.players.keys():
+            if key != self.player:
+                self.player = key
+                return
 
-    def update_board(self, player: str, move: int) -> None:
-        self.board[move] = player
+    def update_board(self, move: int) -> None:
+        self.board[move] = self.player
 
     def check_winner(self) -> None:
         """returns: None, only works to set self.winner"""
-        for player in self.players.keys():
+        for key in self.players.keys():
             for pattern in self.win_patterns:
                 test = []
                 for spot in pattern:
                     test.append(self.board[spot])
-                    if test == [player, player, player]:
-                        self.winner = f'{player} won!'
+                    if test == [key, key, key]:
+                        self.winner = f'{key} won!'
                         return
         if self.open_moves() == []:
             self.winner = 'Draw'
-        return
 
     def get_winner(self) -> str:
         """returns: self.winner ['X won!' / 'O won!' / 'Draw']"""
@@ -64,4 +76,24 @@ class TicTacToe:
     def __str__(self) -> str:
         """reformat how this class is printed"""
         return '{}|{}|{}\n{}|{}|{}\n{}|{}|{}'.format(*(self.board.values()))
+
+class Human(Player):
+    def move(self, ttt: TicTacToe, move: int) -> None:
+        """update ttt board with given move"""
+        ttt.update_board(move)
+
+class Bot(Player):
+    def move(self, ttt: TicTacToe) -> None:
+        """
+        generate random play from bot
+        ttt: TicTacToe instance
+        player: string 'X' or 'O'
+        returns: None
+        """
+        moves = ttt.open_moves()
+        while True:
+            move = str(randint(1, 9))
+            if move in moves:
+                ttt.update_board(int(move))
+                return
 
