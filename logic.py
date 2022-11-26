@@ -1,5 +1,5 @@
 import typing 
-from random import randint
+from random import choice
 
 class Player:
     def __init__(self, symbol: str) -> None:
@@ -36,11 +36,8 @@ class TicTacToe:
                 moves.append(str(key))
         return moves
 
-    def set_player_type(self, symbol: str, human: bool) -> None:
-        if human:
-            self.players[symbol] = Human(symbol)
-        else:
-            self.players[symbol] = Bot(symbol)
+    def set_player_type(self, symbol: str, player: Player) -> None:
+        self.players[symbol] = player
 
     def get_player(self) -> Player:
         """returns: boolean if player is human"""
@@ -77,11 +74,6 @@ class TicTacToe:
         """reformat how this class is printed"""
         return '{}|{}|{}\n{}|{}|{}\n{}|{}|{}'.format(*(self.board.values()))
 
-class Human(Player):
-    def move(self, ttt: TicTacToe, move: int) -> None:
-        """update ttt board with given move"""
-        ttt.update_board(move)
-
 class Bot(Player):
     def move(self, ttt: TicTacToe) -> None:
         """
@@ -91,9 +83,5 @@ class Bot(Player):
         returns: None
         """
         moves = ttt.open_moves()
-        while True:
-            move = str(randint(1, 9))
-            if move in moves:
-                ttt.update_board(int(move))
-                return
+        ttt.update_board(int(choice(moves)))
 
