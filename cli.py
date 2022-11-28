@@ -1,5 +1,5 @@
 import typing
-from logic import TicTacToe, Player, Bot
+from logic import Player, TicTacToe, Bot
 
 def user_input(prompt: str, expected_answer: list, error_message: str) -> str:
     """
@@ -22,10 +22,14 @@ class Human(Player):
         """ask user for open move and update ttt board"""
         moves = ttt.open_moves()
         print(f"it is {ttt.get_player()}'s turn")
-        move = user_input(f'please choose an open position to play {moves}: ',
-                          moves,
+        move = user_input(f'please choose an open position to play {moves}, (enter 0 to quit): ',
+                          moves + ['0'],
                           'please choose a valid open position to play')
-        ttt.update_board(int(move))
+        if move == '0':
+            ttt.get_db().save()
+            quit()
+        else:
+            ttt.update_board(move)
 
 if __name__ == "__main__":
     # game set up
@@ -56,5 +60,6 @@ if __name__ == "__main__":
         ttt.check_winner()
         ttt.switch_player()
     print(ttt, end='\n\n')
-    print(ttt.get_winner())
+    print(ttt.get_winner(), end='\n\n')
+    print(ttt.post_game_stats())
 

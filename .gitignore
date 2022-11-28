@@ -3,3 +3,5 @@
 *.pyc
 test.py
 __pycache__
+venv/
+.ipynb_checkpoints/
