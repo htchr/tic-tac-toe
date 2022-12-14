@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<table class="gameBoard">
+    <tr>
+	<td class="light"> {{ ttt.get_board()[1] }} </th>
+        <td class="dark">{{ ttt.get_board()[2] }}</th>
+        <td class="light">{{ ttt.get_board()[3] }}</th>
+    </tr>
+    <tr>
+        <td class="dark">{{ ttt.get_board()[4] }}</th>
+        <td class="light">{{ ttt.get_board()[5] }}</th>
+        <td class="dark">{{ ttt.get_board()[6] }}</th>
+    </tr>
+    <tr>
+        <td class="light">{{ ttt.get_board()[7] }}</th>
+        <td class="dark">{{ ttt.get_board()[8] }}</th>
+        <td class="light">{{ ttt.get_board()[9] }}</th>
+    </tr>
+</table>
+<br>
+<br>
+<br>
+{{ ttt.get_winner() }}<br>
+{{ ttt.post_game_stats() }}
+{% endblock %}

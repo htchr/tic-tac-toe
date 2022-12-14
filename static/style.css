@@ -1,3 +1,7 @@
+h1 {
+	color: red;
+}
+
 .gameBoard {
     border-collapse: collapse;
     font-size: large;

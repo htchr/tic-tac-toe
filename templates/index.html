@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<p>
+    University of Washington <br>
+    Global Innovation Exchange <br>
+    TECHIN 509 Technology Foundations <br>
+    Jack Hatcher <br>
+</p>
+
+<form action="/" method="POST">
+    <label> How many humans are playing?<br>
+	    Please enter a number between 0 and 2:<br>
+        <input type="number" name="n_humans" min="0" max="2"/>
+	<input type="submit" value="play"/>
+    </label>
+</form>
+{% endblock %}
+

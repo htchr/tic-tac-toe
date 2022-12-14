@@ -64,7 +64,7 @@ class DB:
             if k != ' ': n_moves += 1
         n_nulls = finished_games[['1', '2', '3', '4', '5', '6', '7', '8', '9']].isnull().sum().sum()
         avg_moves = round((len(finished_games) * 9 - n_nulls) / len(finished_games))
-        moves_str = f'This game took {n_moves} moves, the average game takes {avg_moves} moves.\n'
+        moves_str = f'This game took {n_moves} moves\nthe average game takes {avg_moves} moves\n'
         return win_percent_str + moves_str
 
     def remove_last_row(self) -> None:
